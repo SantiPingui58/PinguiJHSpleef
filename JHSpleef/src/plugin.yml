@@ -1,0 +1,12 @@
+name: PinguiJHSpleef
+main: me.santipingui58.jhspleef.Main
+version: 1.0
+commands:
+  setup:
+    description: setup
+  fly:
+    description: fly
+  ping:
+    description: ping
+  leaderboard:
+    description: leaderboard

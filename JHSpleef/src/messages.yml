@@ -1,0 +1,5 @@
+console-not-allowed: '%prefix% &cOnly players are allowed to use this command!'
+self-error: '%prefix% &cYou cant put a bounty on yourself.'
+not-enough-money: '%prefix% &cYou dont have enough money to do that.'
+player-not-found: '%prefix% &cThe player &b%player% &cdoesnt exists or isnt online!'
+use-of-command: '%prefix% &aUse of command: %command%'

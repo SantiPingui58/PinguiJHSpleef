@@ -1,13 +1,15 @@
 package me.santipingui58.jhspleef;
 
 
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.santipingui58.jhspleef.commands.AFKCommand;
 import me.santipingui58.jhspleef.commands.FlyCommand;
 import me.santipingui58.jhspleef.commands.LeaderboardCommand;
+import me.santipingui58.jhspleef.commands.MsgCommand;
 import me.santipingui58.jhspleef.commands.PingCommand;
+import me.santipingui58.jhspleef.commands.RankCommand;
 import me.santipingui58.jhspleef.commands.SetupCommand;
 import me.santipingui58.jhspleef.leaderboard.LeaderboardManager;
 import me.santipingui58.jhspleef.listener.PlayerChat;
@@ -17,15 +19,16 @@ import me.santipingui58.jhspleef.listener.ServerListener;
 import me.santipingui58.jhspleef.task.ArenaTimeTask;
 import me.santipingui58.jhspleef.task.LeaderboardSortTask;
 import me.santipingui58.jhspleef.task.OnMoveTask;
+import me.santipingui58.jhspleef.task.OnlineTimeTask;
 import me.santipingui58.jhspleef.task.ScoreboardTask;
+import me.santipingui58.jhspleef.task.TabTask;
 import me.santipingui58.jhspleef.utils.Configuration;
 
 
 //TO DO LIST
 //Leaderboard
-//Parpadeo Scoreboard
 //Configurar rangos
-// /msg /fly /ping 
+// /msg
 // buycraft
 
 
@@ -49,7 +52,6 @@ public class Main extends JavaPlugin {
 		data = new Configuration("data.yml",this);
 		messages = new Configuration("messages.yml",this);
 		arenas = new Configuration("arenas.yml",this);
-		config();
 		Manager.getManager().loadArenas();
 		Manager.getManager().loadPlayers();
 		LeaderboardManager.getManager().loadLeaderboards();
@@ -76,6 +78,9 @@ public class Main extends JavaPlugin {
 		getCommand("fly").setExecutor(new FlyCommand());
 		getCommand("ping").setExecutor(new PingCommand());
 		getCommand("leaderboard").setExecutor(new LeaderboardCommand());
+		getCommand("rank").setExecutor(new RankCommand());
+		getCommand("msg").setExecutor(new MsgCommand());
+		getCommand("afk").setExecutor(new AFKCommand());
 	}
 	
 	private void registerTasks() {
@@ -83,21 +88,10 @@ public class Main extends JavaPlugin {
 		new ScoreboardTask();
 		new ArenaTimeTask();
 		new LeaderboardSortTask();
+		new TabTask();
+		new OnlineTimeTask();
 	}
-	private void config() {
-		if (getConfig().getString("plugin-chat-prefix")!=null) {
-			prefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("plugin-chat-prefix"));
-		} else {
-			getConfig().set("plugin-chat-prefix", "&5[&e&FactionsVault&5]");
-			prefix = "&c[&5[&e&FactionsVault&5]";
-		}
-			
-		if (getConfig().get("prefix-enabled")!=null) {
-			prefix_enabled = getConfig().getBoolean("prefix-enabled");
-		} else {
-			getConfig().set("prefix-enabled", true);
-			prefix_enabled = true;	
-		}
-	}
+	
+
 	
 }

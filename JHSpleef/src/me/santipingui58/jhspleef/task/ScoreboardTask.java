@@ -21,11 +21,12 @@ public class ScoreboardTask {
 	Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.get(), new Runnable() {
 			
 		    public void run() {
-		    	for (SpleefPlayer sp : Manager.getManager().getPlayers()) {
-		    		PinguiScoreboard.getScoreboard().scoreboard(sp);;
+		    	Manager.getManager().savePlayers();
+		    	for (SpleefPlayer sp : Manager.getManager().getPlayers()) {	    		
+		    		PinguiScoreboard.getScoreboard().scoreboard(sp);
 				}
 		    }
-		    }, 10, 10L);
+		    }, 0, 10L);
 	
 	
 	}

@@ -24,10 +24,11 @@ public class PlayerConnectListener implements Listener {
 		e.setJoinMessage(null); 
 		e.getPlayer().setGameMode(GameMode.ADVENTURE);
 		Manager.getManager().loadData(e.getPlayer());
+		Manager.getManager().saveIP(e.getPlayer());
 		SpleefPlayer sp = Manager.getManager().getSpleefPlayer(e.getPlayer());
 		Manager.getManager().giveLobbyItems(sp);
 		if (e.getPlayer().hasPermission("jhspleef.join")) {
-			for (Player p : Bukkit.getOnlinePlayers()) {
+			for (Player p : Bukkit.getOnlinePlayers()) {	
 				String prefix = ChatColor.translateAlternateColorCodes('&', PermissionsEx.getUser(e.getPlayer()).getPrefix());
 				p.sendMessage(prefix+  e.getPlayer().getName() + " §ahas joined the server!");
 			}

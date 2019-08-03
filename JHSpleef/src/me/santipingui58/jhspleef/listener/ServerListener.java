@@ -1,10 +1,12 @@
 package me.santipingui58.jhspleef.listener;
 
+
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -21,9 +23,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 
 import me.santipingui58.jhspleef.Manager;
+import me.santipingui58.jhspleef.game.DeathReason;
 import me.santipingui58.jhspleef.game.GameState;
 import me.santipingui58.jhspleef.game.SpleefArena;
+import me.santipingui58.jhspleef.game.SpleefKill;
 import me.santipingui58.jhspleef.game.SpleefPlayer;
+import me.santipingui58.jhspleef.gui.LeaderboardMainMenu;
+import me.santipingui58.jhspleef.leaderboard.LeaderboardManager;
+import me.santipingui58.jhspleef.leaderboard.LeaderboardType;
 import net.md_5.bungee.api.ChatColor;
 
 public class ServerListener implements Listener {
@@ -83,12 +90,26 @@ public class ServerListener implements Listener {
 				}
 			}
 			e.getPlayer().sendMessage("§cThe arena §b"+ e.getLine(2) + " §cdoesnt exist.");
+		} else if (e.getLine(0).equalsIgnoreCase("[Spleef]") && e.getLine(1).equalsIgnoreCase("Leaderboard")
+				&& e.getLine(2).equalsIgnoreCase("FFAWins"))  {
+			e.setCancelled(true);
+			LeaderboardManager.getManager().generateWallLeaderboard(LeaderboardType.ALL_TIME_FFA_WINS, Manager.getManager().getSpleefPlayer(e.getPlayer()), e.getBlock().getLocation());
 		}
 	}
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onInteract(PlayerInteractEvent e) {
 		Player p = e.getPlayer();
 	    SpleefPlayer sp = Manager.getManager().getSpleefPlayer(p);
+	    if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+	    	if (p.getItemInHand().isSimilar(new ItemStack(Material.GOLD_SPADE))) {
+	    		Snowball snowball = p.getWorld().spawn(p.getEyeLocation(), Snowball.class);
+	    		snowball.setVelocity(p.getLocation().getDirection().multiply(1.5)); 
+	    		snowball.setShooter(p);
+	    	} else if (p.getItemInHand().equals(Manager.getManager().lobbyitems()[2])) {
+	    		new LeaderboardMainMenu(p).o(p);
+	    	}
+	    }
 		if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			if (e.getClickedBlock().getState() instanceof Sign) {
 			
@@ -165,6 +186,9 @@ public class ServerListener implements Listener {
 	    {
 	      p.playSound(hitblock.getLocation(), Sound.ENTITY_ITEM_PICKUP, 0.5F, 2.0F);
 	      hitblock.setType(Material.AIR);
+	      SpleefArena arena = Manager.getManager().getArenaByPlayer(sp);
+	  
+	      arena.getKills().add(new SpleefKill(hitblock.getLocation(),sp,DeathReason.SNOWBALLED));
 	    }
 	    
 	    	}

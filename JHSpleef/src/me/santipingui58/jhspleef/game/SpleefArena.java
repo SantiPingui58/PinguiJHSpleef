@@ -1,6 +1,7 @@
 package me.santipingui58.jhspleef.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -13,11 +14,12 @@ public class SpleefArena {
 	private Location arena1;
 	private Location arena2;
 	private String name;
-	
+	private HashMap<SpleefPlayer,Integer> winstreak = new HashMap<SpleefPlayer,Integer>();
 	private int time;
 	private GameState state;
 	private List<SpleefPlayer> players = new ArrayList<SpleefPlayer>();
 	private List<SpleefPlayer> queue = new ArrayList<SpleefPlayer>();
+	private List<SpleefKill> kills = new ArrayList<SpleefKill>();
 	public SpleefArena(String name,Location mainspawn,Location lobby,Location arena1, Location arena2,SpleefType type) {
 		this.name = name;
 		this.mainspawn = mainspawn;
@@ -28,6 +30,14 @@ public class SpleefArena {
 		this.state = GameState.LOBBY;
 		this.time = 150;
 		
+	}
+	
+	public HashMap<SpleefPlayer,Integer> getWinStreak() {
+		return this.winstreak;
+	}
+	
+	public List<SpleefKill> getKills() {
+		return this.kills;
 	}
 	
 	public void time() {

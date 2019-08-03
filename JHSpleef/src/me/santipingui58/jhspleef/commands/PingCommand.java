@@ -38,6 +38,7 @@ public class PingCommand implements CommandExecutor{
 			} else if (args.length >= 1 && args[0].equalsIgnoreCase("all")) {
 				
 				p.sendMessage("§aPing:");
+				
 				for(int i = 1; i < Bukkit.getOnlinePlayers().size()+1 ; i++){
 					Entry<String, Integer> e = sortedPing.pollLastEntry();
 					String pname = e.getKey();

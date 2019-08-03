@@ -11,7 +11,10 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 
 import me.santipingui58.jhspleef.Manager;
+import me.santipingui58.jhspleef.game.DeathReason;
 import me.santipingui58.jhspleef.game.GameState;
+import me.santipingui58.jhspleef.game.SpleefArena;
+import me.santipingui58.jhspleef.game.SpleefKill;
 import me.santipingui58.jhspleef.game.SpleefPlayer;
 
 public class PlayerListener implements Listener {
@@ -27,6 +30,9 @@ public class PlayerListener implements Listener {
 				if (Manager.getManager().getArenaByPlayer(sp).getState().equals(GameState.GAME)) {
 				if (!e.getBlock().getType().equals(Material.SNOW_BLOCK)) {
 					e.setCancelled(true);
+				} else {
+					SpleefArena arena = Manager.getManager().getArenaByPlayer(sp);
+					arena.getKills().add(new SpleefKill(e.getBlock().getLocation(),sp,DeathReason.SPLEEFED));
 				}
 				} else {
 					e.setCancelled(true);

@@ -1,6 +1,7 @@
 package me.santipingui58.jhspleef.scoreboard;
 
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +29,9 @@ public class PinguiScoreboard {
 	    }
 	
 	public void scoreboard(SpleefPlayer sp) {
-		setTag(sp);
 				String[] data = null;
 				List<String> cache = new ArrayList<String>();
+				DecimalFormat df = new DecimalFormat("0.00");
 				String displayname = "§3§lJ§c§lH§d§lSpleef";
 				if (sp.getScoreboard().equals(ScoreboardType.LOBBY)) {
 					cache.add(displayname);
@@ -38,6 +39,7 @@ public class PinguiScoreboard {
 					cache.add("§fName: §6" + sp.getPlayer().getName());
 					cache.add("§fRank: " + prefix(sp));
 					cache.add("§fOnline players: §a" + Bukkit.getOnlinePlayers().size());
+					cache.add("§fCoins: §6" + sp.getCoins());
 					cache.add("§f");
 					cache.add("§aFFA Wins: §e" +sp.getFFAWins());
 					cache.add("§aFFA Games: §e" + sp.getFFAGames());
@@ -51,15 +53,22 @@ public class PinguiScoreboard {
 					cache.add(displayname);
 					cache.add("§f");
 					cache.add("§2Players left: §a" + arena.getPlayers().size());
-					cache.add("§f§f");
+					cache.add("§f§f§f§f§f");
 					if (arena.getState().equals(GameState.GAME)) {
 					cache.add("§2Time left: §e" + time(arena.getTime()));
+					cache.add("§f§f");
 					} else if (arena.getState().equals(GameState.STARTING)) {
 						cache.add("§2Game starting...");
-					} 
-					cache.add("§f§f");
+						cache.add("§f§f");
+					} 			
 					cache.add("§2FFA Wins: §e" +sp.getFFAWins());
 					cache.add("§2FFA Games: §e" + sp.getFFAGames());
+					cache.add("§2FFA Kills: §e" + sp.getFFAKills());
+					cache.add("§2M/W Wins: §e" +sp.getMonthlyFFAWins() +"/" + sp.getWeeklyFFAWins());
+					cache.add("§2M/W Games: §e" + sp.getMonthlyFFAGames()+"/" + sp.getWeeklyFFAGames());
+					cache.add("§2M/W Kills: §e" + sp.getMonthlyFFAKills()+"/"+sp.getWeeklyFFAKills());
+					cache.add("§2W/G: §e" + df.format(sp.getWinGameRatio()));
+					cache.add("§2K/G: §e" + df.format(sp.getKillGameRatio()));
 					cache.add("§f§f§f");
 					cache.add("   §7mc.jhspleef.com");
 				}
@@ -81,9 +90,11 @@ public class PinguiScoreboard {
 			return String.format("%02d:%02d",  minutes, seconds);
 		  }
 	
-	private  void setTag(SpleefPlayer sp) {
+	public void setTags() {
+		
+		for (SpleefPlayer sp : Manager.getManager().getPlayers()) {
 		Player p = sp.getPlayer();
-		if (sp.isAfk()) {
+		if (sp.isAfk()) {	
 			NametagEdit.getApi().setPrefix(p, "§7§oAFK ");
 		} else {
 			if (p.hasPermission("jhspleef.donator")) {
@@ -92,6 +103,7 @@ public class PinguiScoreboard {
 				NametagEdit.getApi().setPrefix(p, "§7");
 			}
 		}
+	}
 	}
 	
 	private String prefix(SpleefPlayer sp) {

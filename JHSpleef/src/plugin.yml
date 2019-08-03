@@ -4,9 +4,16 @@ version: 1.0
 commands:
   setup:
     description: setup
-  fly:
+  fly:  
     description: fly
   ping:
     description: ping
   leaderboard:
     description: leaderboard
+  rank:
+    description: rank
+  msg:
+    description: msg
+    aliases: [tell,message]
+  afk:
+    description: afk
